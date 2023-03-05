@@ -29,3 +29,26 @@ function baslangicNotlariniGetir(key) {
     return baslangicDegerleri.notlar;
   }
 }
+
+const initialState = {
+  notlar: baslangicNotlariniGetir(s10chLocalStorageKey),
+};
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case NOT_EKLE:
+      const yeniNotlar = [...state.notlar, action.payload];
+      localStorageStateYaz(s10chLocalStorageKey, yeniNotlar);
+      return { ...state, notlar: yeniNotlar };
+    case NOT_SIL:
+      const notId = action.payload;
+      const kalanNotlar = state.notlar.filter((not) => not.id !== notId);
+      localStorageStateYaz(s10chLocalStorageKey, kalanNotlar);
+      return { ...state, notlar: kalanNotlar };
+
+    default:
+      return state;
+  }
+};
+
+export default reducer;
